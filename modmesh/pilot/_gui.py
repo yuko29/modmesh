@@ -47,6 +47,7 @@ if _pcore.enable:
     from . import _linear_wave
     from . import _canvas
     from . import _profiling
+    from . import _fp_visualizer
 
 __all__ = [  # noqa: F822
     'controller',
@@ -83,6 +84,7 @@ class _Controller(metaclass=_Singleton):
         self.canvas = None
         self.openprofiledata = None
         self.runprofiling = None
+        self.fp_visualizer = None
 
     def __getattr__(self, name):
         return None if self._rmgr is None else getattr(self._rmgr, name)
@@ -103,6 +105,7 @@ class _Controller(metaclass=_Singleton):
         self.canvas = _canvas.CanvasMenu(mgr=self._rmgr)
         self.openprofiledata = _profiling.Profiling(mgr=self._rmgr)
         self.runprofiling = _profiling.RunProfiling(mgr=self._rmgr)
+        self.fp_visualizer = _fp_visualizer.FPVisualizer(mgr=self._rmgr)
         self.populate_menu()
         self._rmgr.show()
         return self._rmgr.exec()
@@ -136,6 +139,7 @@ class _Controller(metaclass=_Singleton):
         self.canvas.populate_menu()
         self.openprofiledata.populate_menu()
         self.runprofiling.populate_menu()
+        self.fp_visualizer.populate_menu()
 
         if sys.platform != 'darwin':
             _addAction(
